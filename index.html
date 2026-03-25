@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AportesBO 2026 — Calculadora Laboral Bolivia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --bg:#f2f1ec; --surface:#ffffff; --surface2:#eeede7; --border:#dedad2;
+  --text:#18180f; --text2:#5c5c52; --text3:#9e9e94;
+  --green:#166534; --green-mid:#22c55e; --green-light:#dcfce7;
+  --red:#991b1b; --red-mid:#ef4444; --red-light:#fee2e2;
+  --blue:#1e3a8a; --blue-mid:#3b82f6; --blue-light:#dbeafe;
+  --amber:#92400e; --amber-mid:#f59e0b; --amber-light:#fef3c7;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.05);
+  --r:14px; --r-sm:9px; --ease:0.2s cubic-bezier(.4,0,.2,1); --nav-h:60px;
+}
+[data-theme="dark"] {
+  --bg:#0f0f0d; --surface:#1a1a17; --surface2:#222220; --border:#2e2e28;
+  --text:#f0efe9; --text2:#a0a096; --text3:#606057;
+  --green:#4ade80; --green-light:#052e16; --red-light:#450a0a;
+  --blue-light:#0c1a3d; --amber-light:#2d1a04;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.25); --shadow:0 4px 16px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.55;min-height:100vh;transition:background var(--ease),color var(--ease)}
+button,select,input{font-family:inherit}
+svg{display:inline-block;vertical-align:middle}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:200;height:var(--nav-h);background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:space-between;padding:0 12px;gap:6px}
+.logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;color:var(--text);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.logo-mark{width:32px;height:32px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,#166534,#1e3a8a);display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:16px;height:16px}
+.logo span{color:var(--green-mid)}
+.nav-pills{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav-pills::-webkit-scrollbar{display:none}
+.nav-btn{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-size:0.8rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all var(--ease);-webkit-tap-highlight-color:transparent}
+.nav-btn svg{width:13px;height:13px;flex-shrink:0}
+.nav-btn:hover,.nav-btn.active{background:var(--surface2);color:var(--text)}
+.nav-btn.active{font-weight:600}
+.theme-btn{width:34px;height:34px;flex-shrink:0;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--ease);-webkit-tap-highlight-color:transparent}
+.theme-btn:hover{background:var(--border);color:var(--text)}
+.theme-btn svg{width:15px;height:15px}
+
+/* HERO */
+.hero{background:linear-gradient(140deg,#0a2415 0%,#0f2147 55%,#162940 100%);padding:clamp(28px,6vw,72px) 16px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 100%,rgba(34,197,94,.12),transparent)}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:100px;padding:4px 12px;font-size:0.76rem;color:rgba(255,255,255,.8);margin-bottom:14px}
+.hero-badge svg{width:11px;height:11px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,5vw,2.8rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.03em;margin-bottom:14px;position:relative;z-index:1}
+.hero h1 em{font-style:normal;color:#4ade80}
+.hero-quote{max-width:580px;margin:0 auto;position:relative;z-index:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;color:rgba(255,255,255,.78);font-size:0.875rem;line-height:1.5}
+
+/* PAGE */
+.page{max-width:1240px;margin:0 auto;padding:20px 12px clamp(40px,8vw,80px)}
+.section{display:none}
+.section.active{display:block}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:370px 1fr;gap:18px;align-items:start}
+@media(max-width:860px){.main-grid{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:background var(--ease),border-color var(--ease)}
+.card+.card{margin-top:14px}
+.ch{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.ci{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ci svg{width:15px;height:15px}
+.ci.g{background:var(--green-light);color:var(--green)}
+.ci.r{background:var(--red-light);color:var(--red)}
+.ci.b{background:var(--blue-light);color:var(--blue)}
+.ci.a{background:var(--amber-light);color:var(--amber)}
+.ct{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem}
+.cb{padding:16px}
+
+/* FORM */
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:0.73rem;font-weight:600;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.iw{position:relative}
+.ip{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--text3);font-size:0.85rem;pointer-events:none;display:flex;align-items:center}
+.ip svg{width:14px;height:14px}
+input[type="number"],select{width:100%;padding:10px 10px 10px 34px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--surface2);color:var(--text);font-size:0.9rem;font-weight:500;outline:none;transition:border-color var(--ease),box-shadow var(--ease);-moz-appearance:textfield;appearance:textfield;-webkit-appearance:none}
+input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none}
+select{padding-left:10px;cursor:pointer}
+input[type="number"]:focus,select:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(34,197,94,.15)}
+.sector-row{display:flex;gap:7px;align-items:flex-end}
+.sector-row select{flex:1}
+.sector-inp{width:72px!important;padding:10px 8px!important;text-align:center}
+.checks{display:flex;flex-direction:column;gap:7px}
+.check-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;transition:border-color var(--ease);-webkit-tap-highlight-color:transparent}
+.check-item:hover{border-color:var(--green-mid)}
+.check-item input[type="checkbox"]{accent-color:var(--green-mid);width:15px;height:15px;flex-shrink:0;cursor:pointer}
+.ck-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ck-icon svg{width:13px;height:13px}
+.ck-name{font-size:0.85rem;font-weight:600}
+.ck-desc{font-size:0.73rem;color:var(--text3)}
+
+/* ALERT */
+.alert-solid{display:none;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:var(--r-sm);background:var(--amber-light);border:1px solid rgba(245,158,11,.3);font-size:0.82rem;color:var(--amber);margin-top:12px;line-height:1.4}
+.alert-solid.show{display:flex}
+.alert-solid svg{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+
+/* SUMMARY */
+.sum-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
+@media(max-width:400px){.sum-strip{grid-template-columns:1fr}}
+.sc{border-radius:var(--r-sm);padding:12px 10px;border:1px solid transparent}
+.sc.g{background:var(--green-light);border-color:rgba(34,197,94,.25)}
+.sc.r{background:var(--red-light);border-color:rgba(239,68,68,.25)}
+.sc.b{background:var(--blue-light);border-color:rgba(59,130,246,.25)}
+.sc-lbl{font-size:0.7rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.sc-val{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(0.95rem,2.8vw,1.25rem);letter-spacing:-.02em;line-height:1}
+.sc.g .sc-val{color:var(--green)}
+.sc.r .sc-val{color:var(--red)}
+.sc.b .sc-val{color:var(--blue)}
+.sc-sub{font-size:0.7rem;color:var(--text3);margin-top:2px}
+
+/* PROGRESS */
+.prog-block{margin-bottom:9px}
+.prog-head{display:flex;justify-content:space-between;font-size:0.77rem;margin-bottom:4px;color:var(--text2)}
+.prog-track{height:6px;background:var(--surface2);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;border-radius:100px;transition:width .55s cubic-bezier(.4,0,.2,1)}
+
+/* RESULT ROWS */
+.sec-title{font-size:0.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:2px}
+.rr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border);gap:8px}
+.rr:last-child{border-bottom:none}
+.rl{font-size:0.82rem;color:var(--text2);display:flex;align-items:center;gap:4px;flex:1;min-width:0}
+.rl.bold{font-weight:700;color:var(--text);font-size:0.88rem}
+.rv{font-family:'Syne',sans-serif;font-weight:700;font-size:0.86rem;white-space:nowrap}
+.rv.g{color:var(--green)}
+.rv.r{color:var(--red)}
+.rv.b{color:var(--blue-mid)}
+.rv.a{color:var(--amber-mid)}
+.rv.big{font-size:1rem}
+.divider{height:1px;background:var(--border);margin:11px 0}
+
+/* TOOLTIP */
+.tip{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--border);background:var(--surface2);color:var(--text3);font-size:.6rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:default;position:relative;font-family:'Syne',sans-serif}
+.tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:var(--text);color:var(--surface);font-size:.72rem;font-weight:400;padding:7px 10px;border-radius:8px;white-space:pre-line;max-width:190px;min-width:140px;text-align:center;line-height:1.45;pointer-events:none;opacity:0;z-index:999;box-shadow:0 4px 14px rgba(0,0,0,.22);transition:opacity .15s}
+.tip:hover::after{opacity:1}
+
+/* CHARTS */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:500px){.charts-grid{grid-template-columns:1fr}}
+.chart-wrap{padding:12px 10px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface)}
+.chart-lbl{font-size:0.77rem;font-weight:600;color:var(--text2);margin-bottom:9px;text-align:center}
+
+/* EXPORT */
+.exp-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r-sm);border:none;background:linear-gradient(135deg,#16a34a,#166534);color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;margin-left:auto;box-shadow:0 2px 8px rgba(22,163,74,.35);transition:all var(--ease);white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.exp-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(22,163,74,.45)}
+.exp-btn:active{transform:none}
+.exp-btn svg{width:13px;height:13px}
+
+/* RES COLS */
+.res-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:580px){.res-cols{grid-template-columns:1fr}}
+
+/* HIGHLIGHT ROW */
+.hl-row{padding:8px 10px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.hl-label{font-weight:800;font-size:0.88rem;display:flex;align-items:center;gap:5px}
+.hl-label svg{width:15px;height:15px}
+
+/* INFO */
+.info-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.25rem,4vw,1.75rem);letter-spacing:-.025em;margin-bottom:18px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--shadow-sm)}
+.info-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.info-ico svg{width:18px;height:18px}
+.info-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;margin-bottom:7px}
+.info-card p{font-size:0.83rem;color:var(--text2);line-height:1.6}
+
+/* TABLE */
+.rates-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.rt{width:100%;border-collapse:collapse;font-size:0.83rem}
+.rt th{background:var(--surface2);font-weight:600;padding:7px 11px;text-align:left;font-size:0.71rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text2)}
+.rt td{padding:7px 11px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rt tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:2px 9px;border-radius:100px;font-size:0.74rem;font-weight:700}
+.pill.r{background:var(--red-light);color:var(--red)}
+.pill.b{background:var(--blue-light);color:var(--blue)}
+.pill.a{background:var(--amber-light);color:var(--amber)}
+.pill.g{background:var(--green-light);color:var(--green)}
+
+footer{text-align:center;padding:24px 16px;border-top:1px solid var(--border);color:var(--text3);font-size:0.79rem;margin-top:40px}
+footer strong{color:var(--text2)}
+
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.card{animation:up .32s ease both}
+</style>
+</head>
+
+<!-- SVG SYMBOL DEFS -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+  <symbol id="i-calc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+  <symbol id="i-dollar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 22V12h6v10"/><path d="M8 7h.01M12 7h.01M16 7h.01M8 11h.01M16 11h.01"/></symbol>
+  <symbol id="i-pie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="19" width="20" height="2"/><line x1="6" y1="9" x2="6" y2="19"/><line x1="10" y1="9" x2="10" y2="19"/><line x1="14" y1="9" x2="14" y2="19"/><line x1="18" y1="9" x2="18" y2="19"/><polygon points="12 2 2 7 22 7"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="i-hat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v2z"/><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M4 15v-3a8 8 0 0 1 16 0v3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+</svg>
+
+<body>
+
+<header class="header">
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    </div>
+    Aportes<span>BO</span>
+  </a>
+  <nav class="nav-pills">
+    <button class="nav-btn active" onclick="showSection('calc',this)"><svg><use href="#i-calc"/></svg>Calculadora</button>
+    <button class="nav-btn" onclick="showSection('info',this)"><svg><use href="#i-info"/></svg>Información</button>
+    <button class="nav-btn" onclick="showSection('tabla',this)"><svg><use href="#i-table"/></svg>Tasas</button>
+  </nav>
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
+    <svg><use href="#i-moon" id="themeIcon"/></svg>
+  </button>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Gestión 2026 · Normativa Vigente
+  </div>
+  <h1>Calculadora de<br><em>Aportes Laborales</em><br>Bolivia</h1>
+  <div class="hero-quote">
+    "En Bolivia, el salario que recibes no representa el costo real para la empresa. Esta herramienta te muestra el impacto completo de los aportes laborales según normativa vigente."
+  </div>
+</div>
+
+<div class="page">
+
+<!-- CALCULADORA -->
+<div id="calc" class="section active">
+  <div class="main-grid">
+
+    <div>
+      <div class="card">
+        <div class="ch">
+          <div class="ci g"><svg><use href="#i-gear"/></svg></div>
+          <span class="ct">Datos del Trabajador</span>
+        </div>
+        <div class="cb">
+          <div class="fg">
+            <label class="fl">Salario Mensual Bruto</label>
+            <div class="iw">
+              <span class="ip"><svg><use href="#i-dollar"/></svg></span>
+              <input type="number" id="salary" value="5000" min="0" step="100" oninput="calculate()" inputmode="numeric"/>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Tipo de Trabajador</label>
+            <div class="iw">
+              <span class="ip"><svg><use href="#i-user"/></svg></span>
+              <select id="workerType" onchange="calculate()" style="padding-left:34px">
+                <option value="dep">Dependiente (relación de dependencia)</option>
+                <option value="ind">Independiente (cuenta propia)</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Sector / Riesgo Profesional Patronal</label>
+            <div class="sector-row">
+              <div class="iw" style="flex:1">
+                <span class="ip"><svg><use href="#i-hat"/></svg></span>
+                <select id="sector" onchange="sectorChange()" style="padding-left:34px">
+                  <option value="1.71">Oficina / Comercio (1.71%)</option>
+                  <option value="2.5">Construcción (2.5%)</option>
+                  <option value="3.5">Minería (3.5%)</option>
+                  <option value="custom">Personalizado</option>
+                </select>
+              </div>
+              <input type="number" id="sectorRate" class="sector-inp" value="1.71" step="0.01" min="0" max="20" oninput="calculate()" inputmode="decimal"/>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Beneficios Sociales a incluir</label>
+            <div class="checks">
+              <label class="check-item">
+                <input type="checkbox" id="chkAguinaldo" checked onchange="calculate()"/>
+                <div class="ck-icon" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-gift"/></svg></div>
+                <div><div class="ck-name">Aguinaldo (8.33%)</div><div class="ck-desc">Obligatorio · 1 sueldo en diciembre</div></div>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" id="chkPrima" onchange="calculate()"/>
+                <div class="ck-icon" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-trend"/></svg></div>
+                <div><div class="ck-name">Prima (8.33%)</div><div class="ck-desc">Solo si la empresa tiene utilidades</div></div>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" id="chkQuinquenio" onchange="calculate()"/>
+                <div class="ck-icon" style="background:var(--green-light);color:var(--green)"><svg><use href="#i-cal"/></svg></div>
+                <div><div class="ck-name">Quinquenio (8.33%)</div><div class="ck-desc">Cada 5 años de antigüedad continua</div></div>
+              </label>
+            </div>
+          </div>
+          <div class="alert-solid" id="solidarioAlert">
+            <svg><use href="#i-alert"/></svg>
+            <span id="solidarioMsg">Tu salario activa el <strong>Aporte Solidario Progresivo.</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultsPanel">
+      <!-- SUMMARY -->
+      <div class="card" style="animation-delay:.06s;margin-bottom:14px">
+        <div class="ch">
+          <div class="ci g"><svg><use href="#i-pie"/></svg></div>
+          <span class="ct">Resumen Ejecutivo</span>
+          <button class="exp-btn" onclick="exportImage()"><svg><use href="#i-dl"/></svg>Exportar</button>
+        </div>
+        <div class="cb">
+          <div class="sum-strip">
+            <div class="sc g"><div class="sc-lbl">Salario Neto</div><div class="sc-val" id="sumNeto">—</div><div class="sc-sub">Lo que recibes</div></div>
+            <div class="sc r"><div class="sc-lbl">Descuentos</div><div class="sc-val" id="sumDesc">—</div><div class="sc-sub">De tu bolsillo</div></div>
+            <div class="sc b"><div class="sc-lbl">Costo Empresa</div><div class="sc-val" id="sumCosto">—</div><div class="sc-sub">Pago real total</div></div>
+          </div>
+          <div class="prog-block">
+            <div class="prog-head"><span>Salario Neto</span><span id="pN" style="color:var(--green);font-weight:700">—</span></div>
+            <div class="prog-track"><div class="prog-fill" id="bN" style="background:var(--green-mid);width:0%"></div></div>
+          </div>
+          <div class="prog-block">
+            <div class="prog-head"><span>Descuentos Trabajador</span><span id="pD" style="color:var(--red);font-weight:700">—</span></div>
+            <div class="prog-track"><div class="prog-fill" id="bD" style="background:var(--red-mid);width:0%"></div></div>
+          </div>
+          <div class="prog-block">
+            <div class="prog-head"><span>Aportes + Beneficios Empresa</span><span id="pE" style="color:var(--blue-mid);font-weight:700">—</span></div>
+            <div class="prog-track"><div class="prog-fill" id="bE" style="background:var(--blue-mid);width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO COLS -->
+      <div class="res-cols">
+        <!-- TRABAJADOR -->
+        <div class="card" style="animation-delay:.1s">
+          <div class="ch"><div class="ci r"><svg><use href="#i-user"/></svg></div><span class="ct">Descuentos Trabajador</span></div>
+          <div class="cb">
+            <div class="sec-title">AFP Base</div>
+            <div class="rr"><div class="rl">Jubilación 10%<span class="tip" data-tip="Va a tu cuenta individual de ahorro para el retiro en la AFP.">?</span></div><div class="rv r" id="r_jub">—</div></div>
+            <div class="rr"><div class="rl">Riesgo Común 1.71%<span class="tip" data-tip="Cubre invalidez y muerte por causas no laborales.">?</span></div><div class="rv r" id="r_ries">—</div></div>
+            <div class="rr"><div class="rl">Comisión AFP 0.5%<span class="tip" data-tip="Comisión por administrar tu fondo de pensiones.">?</span></div><div class="rv r" id="r_com">—</div></div>
+            <div class="rr"><div class="rl">Fondo Solidario 0.5%<span class="tip" data-tip="Financia pensiones mínimas solidarias.">?</span></div><div class="rv r" id="r_sol">—</div></div>
+            <div class="divider"></div>
+            <div class="sec-title">Solidario Adicional</div>
+            <div class="rr"><div class="rl">Progresivo<span class="tip" data-tip="> 13,000: +1.15%&#10;> 25,000: +5.74%&#10;> 35,000: +11.48%">?</span></div><div class="rv a" id="r_solProg">Bs. 0.00</div></div>
+            <div class="divider"></div>
+            <div class="rr"><div class="rl bold">Total Descuentos</div><div class="rv r big" id="r_totalDesc">—</div></div>
+            <div class="hl-row" style="background:var(--green-light);margin-top:6px">
+              <div class="hl-label" style="color:var(--green)"><svg><use href="#i-check"/></svg>Salario Neto</div>
+              <div class="rv big" style="color:var(--green)" id="r_neto">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EMPRESA -->
+        <div class="card" style="animation-delay:.14s">
+          <div class="ch"><div class="ci b"><svg><use href="#i-building"/></svg></div><span class="ct">Aportes Empresa</span></div>
+          <div class="cb">
+            <div class="sec-title">Patronales</div>
+            <div class="rr"><div class="rl">Caja Salud 10%<span class="tip" data-tip="Atención médica del trabajador y su familia.">?</span></div><div class="rv b" id="r_salud">—</div></div>
+            <div class="rr"><div class="rl">Fondo Vivienda 2%<span class="tip" data-tip="Aporte al FONVIS para créditos habitacionales.">?</span></div><div class="rv b" id="r_viv">—</div></div>
+            <div class="rr"><div class="rl">Riesgo Profesional<span class="tip" data-tip="Seguro por accidentes laborales. Varía por sector.">?</span></div><div class="rv b" id="r_riesProf">—</div></div>
+            <div class="rr"><div class="rl">Solidario Patronal 3.5%<span class="tip" data-tip="Contribución al fondo solidario de pensiones.">?</span></div><div class="rv b" id="r_solPat">—</div></div>
+            <div class="divider"></div>
+            <div class="sec-title">Beneficios Sociales</div>
+            <div class="rr"><div class="rl">Aguinaldo 8.33%</div><div class="rv a" id="r_agui">—</div></div>
+            <div class="rr"><div class="rl">Prima 8.33%</div><div class="rv a" id="r_prima">—</div></div>
+            <div class="rr"><div class="rl">Quinquenio 8.33%</div><div class="rv a" id="r_quinq">—</div></div>
+            <div class="divider"></div>
+            <div class="rr"><div class="rl bold">Total Aportes</div><div class="rv b big" id="r_totalPat">—</div></div>
+            <div class="hl-row" style="background:var(--blue-light);margin-top:6px">
+              <div class="hl-label" style="color:var(--blue)"><svg><use href="#i-briefcase"/></svg>Costo Total</div>
+              <div class="rv big" style="color:var(--blue-mid)" id="r_costoTotal">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="card" style="animation-delay:.18s">
+        <div class="ch"><div class="ci a"><svg><use href="#i-pie"/></svg></div><span class="ct">Visualización</span></div>
+        <div class="cb">
+          <div class="charts-grid">
+            <div class="chart-wrap">
+              <div class="chart-lbl">Distribución Salario Bruto</div>
+              <canvas id="pieChart" height="180"></canvas>
+            </div>
+            <div class="chart-wrap">
+              <div class="chart-lbl">Salario Bruto vs. Costo Empresa</div>
+              <canvas id="barChart" height="180"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFORMACIÓN -->
+<div id="info" class="section">
+  <p class="info-title">¿Qué necesitas saber?</p>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-bank"/></svg></div>
+      <h3>¿Qué es la AFP?</h3>
+      <p>Las Administradoras de Fondos de Pensiones gestionan tus ahorros para el retiro. El 10% de jubilación va a tu cuenta individual y te garantiza una renta al jubilarte.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-heart"/></svg></div>
+      <h3>¿Qué es el Aporte Solidario?</h3>
+      <p>Es una contribución progresiva de trabajadores con altos ingresos para financiar pensiones mínimas a quienes aportaron poco. Quien más gana, más aporta al fondo solidario.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--red-light);color:var(--red)"><svg><use href="#i-trend"/></svg></div>
+      <h3>¿Por qué aumenta con el salario?</h3>
+      <p>El sistema es progresivo. Se activa solo sobre 13,000 Bs y escala en 3 tramos: 1.15%, 5.74% y 11.48%. Salarios bajos no pagan nada adicional por este concepto.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--green-light);color:var(--green)"><svg><use href="#i-users"/></svg></div>
+      <h3>Dependiente vs. Independiente</h3>
+      <p>El trabajador <strong>dependiente</strong> tiene empleador que cubre los aportes patronales. El <strong>independiente</strong> asume todos los costos, incluidos los que paga la empresa.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-hat"/></svg></div>
+      <h3>¿Qué cambia según sector?</h3>
+      <p>El Riesgo Profesional varía según la peligrosidad de la actividad. Oficinas pagan 1.71%, construcción y minería tienen tasas más altas por mayor riesgo de accidentes laborales.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-gift"/></svg></div>
+      <h3>Beneficios Sociales</h3>
+      <p>El <strong>aguinaldo</strong> es obligatorio (1 salario en diciembre). La <strong>prima</strong> se paga si hay utilidades. El <strong>quinquenio</strong> equivale a 1 salario por cada 5 años continuos.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TABLA TASAS -->
+<div id="tabla" class="section">
+  <p class="info-title">Tasas Vigentes 2026</p>
+  <div class="rates-grid">
+    <div class="card">
+      <div class="ch"><div class="ci r"><svg><use href="#i-user"/></svg></div><span class="ct">Aportes del Trabajador</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Concepto</th><th>Tasa</th></tr></thead>
+          <tbody>
+            <tr><td>Jubilación (AFP)</td><td><span class="pill r">10.00%</span></td></tr>
+            <tr><td>Riesgo Común</td><td><span class="pill r">1.71%</span></td></tr>
+            <tr><td>Comisión AFP</td><td><span class="pill r">0.50%</span></td></tr>
+            <tr><td>Fondo Solidario</td><td><span class="pill r">0.50%</span></td></tr>
+            <tr><td><strong>Total Base</strong></td><td><span class="pill r"><strong>12.71%</strong></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ci a"><svg><use href="#i-pct"/></svg></div><span class="ct">Solidario Progresivo</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Rango Salarial</th><th>Tasa Adicional</th></tr></thead>
+          <tbody>
+            <tr><td>Hasta 13,000 Bs</td><td><span class="pill g">0%</span></td></tr>
+            <tr><td>&gt; 13,000 Bs</td><td><span class="pill a">+1.15%</span></td></tr>
+            <tr><td>&gt; 25,000 Bs</td><td><span class="pill a">+5.74%</span></td></tr>
+            <tr><td>&gt; 35,000 Bs</td><td><span class="pill a">+11.48%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ci b"><svg><use href="#i-building"/></svg></div><span class="ct">Aportes del Empleador</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Concepto</th><th>Tasa</th></tr></thead>
+          <tbody>
+            <tr><td>Caja de Salud</td><td><span class="pill b">10.00%</span></td></tr>
+            <tr><td>Fondo de Vivienda</td><td><span class="pill b">2.00%</span></td></tr>
+            <tr><td>Riesgo Profesional (oficina)</td><td><span class="pill b">1.71%</span></td></tr>
+            <tr><td>Aporte Solidario Patronal</td><td><span class="pill b">3.50%</span></td></tr>
+            <tr><td><strong>Total Mínimo</strong></td><td><span class="pill b"><strong>17.21%</strong></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ci g"><svg><use href="#i-gift"/></svg></div><span class="ct">Beneficios Sociales</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Concepto</th><th>Mensual</th><th>Equivale</th></tr></thead>
+          <tbody>
+            <tr><td>Aguinaldo</td><td><span class="pill a">8.33%</span></td><td>1 salario/año</td></tr>
+            <tr><td>Prima (utilidades)</td><td><span class="pill a">8.33%</span></td><td>1 salario/año</td></tr>
+            <tr><td>Quinquenio</td><td><span class="pill a">8.33%</span></td><td>c/5 años</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<footer>
+  <strong>AportesBO 2026</strong> — Calculadora de Aportes Laborales Bolivia<br>
+  <span style="font-size:.75rem">Herramienta orientativa. Consulta a un contador para casos específicos. Normativa gestión 2026.</span>
+</footer>
+
+<script>
+let isDark=false;
+function toggleTheme(){
+  isDark=!isDark;
+  document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
+  document.getElementById('themeIcon').setAttribute('href',isDark?'#i-sun':'#i-moon');
+  setTimeout(()=>{initCharts();calculate();},50);
+}
+function showSection(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+}
+function sectorChange(){
+  const sel=document.getElementById('sector');
+  const inp=document.getElementById('sectorRate');
+  if(sel.value!=='custom')inp.value=sel.value;
+  calculate();
+}
+function fmt(n){return'Bs. '+(n||0).toLocaleString('es-BO',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+let pieChart,barChart;
+function initCharts(){
+  const cs=getComputedStyle(document.documentElement);
+  const tc=cs.getPropertyValue('--text2').trim();
+  const gc=cs.getPropertyValue('--border').trim();
+  if(pieChart)pieChart.destroy();
+  if(barChart)barChart.destroy();
+  pieChart=new Chart(document.getElementById('pieChart').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Salario Neto','AFP Base','Solidario'],datasets:[{data:[1,0,0],backgroundColor:['#22c55e','#ef4444','#f59e0b'],borderWidth:0,hoverOffset:5}]},
+    options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom',labels:{color:tc,boxWidth:9,padding:8,font:{family:'DM Sans',size:11}}},tooltip:{callbacks:{label:c=>' Bs. '+(c.raw||0).toLocaleString('es-BO',{minimumFractionDigits:2})}}},cutout:'62%'}
+  });
+  barChart=new Chart(document.getElementById('barChart').getContext('2d'),{
+    type:'bar',
+    data:{labels:['Salario Bruto','Costo Empresa'],datasets:[{data:[0,0],backgroundColor:['rgba(34,197,94,.8)','rgba(59,130,246,.8)'],borderRadius:7,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' Bs. '+(c.raw||0).toLocaleString('es-BO',{minimumFractionDigits:2})}}},scales:{x:{ticks:{color:tc,font:{family:'DM Sans',size:11}},grid:{display:false}},y:{ticks:{color:tc,font:{family:'DM Sans',size:10},callback:v=>'Bs.'+(v/1000).toFixed(0)+'k'},grid:{color:gc}}}}
+  });
+}
+
+function calculate(){
+  const salary=parseFloat(document.getElementById('salary').value)||0;
+  const sRate=parseFloat(document.getElementById('sectorRate').value)||1.71;
+  const doAgui=document.getElementById('chkAguinaldo').checked;
+  const doPrima=document.getElementById('chkPrima').checked;
+  const doQuinq=document.getElementById('chkQuinquenio').checked;
+
+  const jub=salary*0.10, ries=salary*0.0171, com=salary*0.005, sol=salary*0.005;
+  let solPct=0;
+  if(salary>35000)solPct=0.1148;
+  else if(salary>25000)solPct=0.0574;
+  else if(salary>13000)solPct=0.0115;
+  const solProg=salary*solPct;
+  const totalDesc=jub+ries+com+sol+solProg;
+  const neto=salary-totalDesc;
+
+  const salud=salary*0.10, viv=salary*0.02, riesP=salary*(sRate/100), solPat=salary*0.035;
+  const aguinaldo=doAgui?salary*0.0833:0, prima=doPrima?salary*0.0833:0, quinq=doQuinq?salary*0.0833:0;
+  const totalPat=salud+viv+riesP+solPat+aguinaldo+prima+quinq;
+  const costoTotal=salary+totalPat;
+
+  document.getElementById('r_jub').textContent=fmt(jub);
+  document.getElementById('r_ries').textContent=fmt(ries);
+  document.getElementById('r_com').textContent=fmt(com);
+  document.getElementById('r_sol').textContent=fmt(sol);
+  document.getElementById('r_solProg').textContent=solProg>0?fmt(solProg)+` (${(solPct*100).toFixed(2)}%)`:'Bs. 0.00';
+  document.getElementById('r_totalDesc').textContent=fmt(totalDesc);
+  document.getElementById('r_neto').textContent=fmt(neto);
+  document.getElementById('r_salud').textContent=fmt(salud);
+  document.getElementById('r_viv').textContent=fmt(viv);
+  document.getElementById('r_riesProf').textContent=fmt(riesP)+` (${sRate.toFixed(2)}%)`;
+  document.getElementById('r_solPat').textContent=fmt(solPat);
+  document.getElementById('r_agui').textContent=doAgui?fmt(aguinaldo):'—';
+  document.getElementById('r_prima').textContent=doPrima?fmt(prima):'—';
+  document.getElementById('r_quinq').textContent=doQuinq?fmt(quinq):'—';
+  document.getElementById('r_totalPat').textContent=fmt(totalPat);
+  document.getElementById('r_costoTotal').textContent=fmt(costoTotal);
+  document.getElementById('sumNeto').textContent=fmt(neto);
+  document.getElementById('sumDesc').textContent=fmt(totalDesc);
+  document.getElementById('sumCosto').textContent=fmt(costoTotal);
+
+  if(costoTotal>0){
+    const pn=(neto/costoTotal*100).toFixed(1);
+    const pd=(totalDesc/costoTotal*100).toFixed(1);
+    const pe=(totalPat/costoTotal*100).toFixed(1);
+    document.getElementById('bN').style.width=pn+'%';
+    document.getElementById('bD').style.width=pd+'%';
+    document.getElementById('bE').style.width=pe+'%';
+    document.getElementById('pN').textContent=pn+'%';
+    document.getElementById('pD').textContent=pd+'%';
+    document.getElementById('pE').textContent=pe+'%';
+  }
+
+  const al=document.getElementById('solidarioAlert');
+  if(salary>13000){
+    al.classList.add('show');
+    const lbl=salary>35000?'11.48%':salary>25000?'5.74%':'1.15%';
+    document.getElementById('solidarioMsg').innerHTML=`Tu salario activa el <strong>Aporte Solidario Progresivo (${lbl})</strong>. Se aplica un descuento adicional.`;
+  }else al.classList.remove('show');
+
+  if(pieChart){pieChart.data.datasets[0].data=[neto,jub+ries+com+sol,solProg];pieChart.update('none');}
+  if(barChart){barChart.data.datasets[0].data=[salary,costoTotal];barChart.update('none');}
+}
+
+async function exportImage(){
+  try{
+    const bg=getComputedStyle(document.documentElement).getPropertyValue('--surface').trim();
+    const canvas=await html2canvas(document.getElementById('resultsPanel'),{backgroundColor:bg||'#fff',scale:2,useCORS:true});
+    const a=document.createElement('a');a.download='aportes-bo-2026.png';a.href=canvas.toDataURL('image/png');a.click();
+  }catch(e){alert('Error al exportar.');}
+}
+
+initCharts();
+calculate();
+</script>
+</body>
+</html>

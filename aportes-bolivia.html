@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AportesBO 2026 — Calculadora Laboral Bolivia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e1db;
+    --text: #1a1a18;
+    --text2: #5a5a55;
+    --text3: #9a9a95;
+    --green: #1d7a4e;
+    --green-light: #e8f5ee;
+    --green-mid: #2fa86a;
+    --red: #c0392b;
+    --red-light: #fcecea;
+    --red-mid: #e05c4e;
+    --blue: #1a4a8a;
+    --blue-light: #e8eef8;
+    --blue-mid: #3269c4;
+    --amber: #b5700a;
+    --amber-light: #fef3e2;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+  [data-theme="dark"] {
+    --bg: #111210;
+    --surface: #1c1d1a;
+    --surface2: #242522;
+    --border: #2e2f2b;
+    --text: #f0efe9;
+    --text2: #a8a8a0;
+    --text3: #5a5a55;
+    --green-light: #0d2e1e;
+    --red-light: #2a100d;
+    --blue-light: #0d1e38;
+    --amber-light: #2a1a05;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    transition: background var(--transition), color var(--transition);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(16px, 4vw, 48px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--green-mid), var(--blue-mid));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .logo span { color: var(--green-mid); }
+  nav { display: flex; gap: 8px; align-items: center; }
+  nav a {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+
+  .theme-btn {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    transition: all var(--transition);
+    color: var(--text);
+    margin-left: 4px;
+  }
+  .theme-btn:hover { background: var(--border); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0d3520 0%, #1a4a8a 100%);
+    padding: clamp(40px, 6vw, 80px) clamp(16px, 4vw, 48px);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 span { color: #4ade80; }
+  .hero-msg {
+    max-width: 640px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.95rem;
+    font-style: italic;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  /* ── LAYOUT ── */
+  .main-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 48px);
+  }
+  .grid-main {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .grid-main { grid-template-columns: 1fr; }
+    nav a:not(.active) { display: none; }
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .card-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .card-icon.green { background: var(--green-light); }
+  .card-icon.red { background: var(--red-light); }
+  .card-icon.blue { background: var(--blue-light); }
+  .card-icon.amber { background: var(--amber-light); }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+  }
+  .card-body { padding: 20px 22px; }
+
+  /* ── FORM ── */
+  .form-group { margin-bottom: 18px; }
+  label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .input-wrap { position: relative; }
+  .input-prefix {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    font-weight: 600; color: var(--text2); font-size: 0.95rem; pointer-events: none;
+  }
+  input[type="number"], select {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    -moz-appearance: textfield;
+  }
+  select { padding-left: 14px; }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus, select:focus {
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(47,168,106,0.12);
+  }
+  .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+  .check-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--surface2);
+  }
+  .check-item:hover { border-color: var(--green-mid); }
+  .check-item input[type="checkbox"] { accent-color: var(--green-mid); width: 16px; height: 16px; cursor: pointer; }
+  .check-label { font-size: 0.9rem; font-weight: 500; }
+  .check-desc { font-size: 0.78rem; color: var(--text3); }
+
+  .sector-row { display: flex; gap: 8px; align-items: flex-end; }
+  .sector-row select { flex: 1; }
+  .sector-input { width: 80px !important; padding-left: 14px !important; }
+
+  /* ── RESULTS ── */
+  .results-grid { display: grid; gap: 16px; }
+  .result-section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--border);
+    gap: 12px;
+  }
+  .result-row:last-child { border-bottom: none; }
+  .result-label {
+    font-size: 0.875rem;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+  }
+  .result-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .val-red { color: var(--red); }
+  .val-green { color: var(--green); }
+  .val-blue { color: var(--blue-mid); }
+  .val-amber { color: var(--amber); }
+
+  .tooltip-btn {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 0.65rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text3);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .tooltip-btn::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: var(--surface);
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    max-width: 220px;
+    min-width: 160px;
+    text-align: center;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 999;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .tooltip-btn:hover::after { opacity: 1; }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) { .summary-cards { grid-template-columns: 1fr; } }
+  .sum-card {
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .sum-card.green { background: var(--green-light); border-color: rgba(47,168,106,0.2); }
+  .sum-card.red { background: var(--red-light); border-color: rgba(192,57,43,0.2); }
+  .sum-card.blue { background: var(--blue-light); border-color: rgba(50,105,196,0.2); }
+  .sum-label { font-size: 0.75rem; font-weight: 500; color: var(--text2); margin-bottom: 4px; }
+  .sum-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .sum-val.green { color: var(--green); }
+  .sum-val.red { color: var(--red); }
+  .sum-val.blue { color: var(--blue-mid); }
+  .sum-sub { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+
+  /* ── CHARTS ── */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  @media (max-width: 600px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-wrap {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  .chart-title { font-size: 0.82rem; font-weight: 600; color: var(--text2); margin-bottom: 12px; text-align: center; }
+  canvas { max-height: 200px; }
+
+  /* ── SOLIDARIO ALERT ── */
+  .solidario-alert {
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--amber-light);
+    border: 1px solid rgba(181,112,10,0.25);
+    border-radius: var(--radius-sm);
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--amber);
+  }
+  .solidario-alert.show { display: flex; }
+  .solidario-alert strong { font-weight: 600; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-section { margin-top: 16px; }
+  .progress-item { margin-bottom: 12px; }
+  .progress-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text2); margin-bottom: 4px; }
+  .progress-bar { height: 8px; background: var(--surface2); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 100px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+  /* ── INFO SECTION ── */
+  .info-section { margin-top: 40px; }
+  .info-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .info-card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+  .info-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+  .info-card p { font-size: 0.875rem; color: var(--text2); line-height: 1.6; }
+
+  /* ── TABLE ── */
+  .rates-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .rates-table th { background: var(--surface2); font-weight: 600; padding: 8px 12px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text2); }
+  .rates-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  .rates-table tr:last-child td { border-bottom: none; }
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .pill.red { background: var(--red-light); color: var(--red); }
+  .pill.blue { background: var(--blue-light); color: var(--blue-mid); }
+  .pill.amber { background: var(--amber-light); color: var(--amber); }
+
+  /* ── EXPORT BTN ── */
+  .export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    background: linear-gradient(135deg, var(--green-mid), #1a9c5a);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 2px 8px rgba(47,168,106,0.3);
+  }
+  .export-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(47,168,106,0.4); }
+  .export-btn:active { transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--text3);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+  .footer-note { margin-top: 6px; font-size: 0.78rem; }
+
+  /* ── SECTION TABS ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── ANIMS ── */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .card { animation: fadeIn 0.4s ease both; }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">🇧🇴</div>
+    Aportes<span>BO</span>
+  </a>
+  <nav>
+    <a class="active" onclick="showSection('calc')">Calculadora</a>
+    <a onclick="showSection('info')">Información</a>
+    <a onclick="showSection('tabla')">Tasas</a>
+  </nav>
+  <button class="theme-btn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📅 Gestión 2026 · Normativa Vigente</div>
+  <h1>Calculadora de<br><span>Aportes Laborales</span> Bolivia</h1>
+  <div class="hero-msg">
+    "En Bolivia, el salario que recibes no representa el costo real para la empresa. Esta herramienta te muestra el impacto completo de los aportes laborales según normativa vigente."
+  </div>
+</div>
+
+<div class="main-wrap">
+
+<!-- ══ SECCIÓN CALCULADORA ══ -->
+<div id="calc" class="section active">
+  <div class="grid-main">
+
+    <!-- FORMULARIO -->
+    <div>
+      <div class="card" style="animation-delay:0.05s">
+        <div class="card-header">
+          <div class="card-icon green">⚙️</div>
+          <div>
+            <div class="card-title">Configuración</div>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <div class="form-group">
+            <label>Salario Mensual (Bs.)</label>
+            <div class="input-wrap">
+              <span class="input-prefix">Bs.</span>
+              <input type="number" id="salary" value="5000" min="0" oninput="calculate()" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de Trabajador</label>
+            <select id="workerType" onchange="calculate()">
+              <option value="dep">Dependiente</option>
+              <option value="ind">Independiente</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Sector / Riesgo Profesional</label>
+            <div class="sector-row">
+              <select id="sector" onchange="sectorChange()">
+                <option value="1.71">🏢 Oficina (1.71%)</option>
+                <option value="2.5">🏗️ Construcción</option>
+                <option value="3.5">⛏️ Minería</option>
+                <option value="custom">✏️ Personalizado</option>
+              </select>
+              <input type="number" id="sectorRate" class="sector-input" value="1.71" step="0.01" min="0" max="20" oninput="calculate()" style="padding-left:14px" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Beneficios Sociales a incluir</label>
+            <div class="checkbox-group">
+              <label class="check-item">
+                <input type="checkbox" id="chkAguinaldo" checked onchange="calculate()" />
+                <div>
+                  <div class="check-label">🎁 Aguinaldo (8.33%)</div>
+                  <div class="check-desc">Obligatorio · 1 sueldo al año</div>
+                </div>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" id="chkPrima" onchange="calculate()" />
+                <div>
+                  <div class="check-label">💰 Prima (8.33%)</div>
+                  <div class="check-desc">Solo si la empresa tiene utilidades</div>
+                </div>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" id="chkQuinquenio" onchange="calculate()" />
+                <div>
+                  <div class="check-label">📅 Quinquenio (8.33%)</div>
+                  <div class="check-desc">Cada 5 años de antigüedad</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="solidario-alert" id="solidarioAlert">
+            ⚠️ <span><strong>Aporte Solidario Adicional:</strong> Tu salario supera el umbral de progresividad. Se aplicará un descuento adicional.</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div id="resultsPanel">
+      <!-- SUMMARY -->
+      <div class="card" style="animation-delay:0.1s; margin-bottom:16px;">
+        <div class="card-header">
+          <div class="card-icon green">📊</div>
+          <div class="card-title">Resumen</div>
+          <button class="export-btn" onclick="exportImage()" style="margin-left:auto">📥 Exportar</button>
+        </div>
+        <div class="card-body">
+          <div class="summary-cards">
+            <div class="sum-card green">
+              <div class="sum-label">Salario Neto</div>
+              <div class="sum-val green" id="sumNeto">—</div>
+              <div class="sum-sub">Lo que recibes</div>
+            </div>
+            <div class="sum-card red">
+              <div class="sum-label">Descuentos AFP</div>
+              <div class="sum-val red" id="sumDescuentos">—</div>
+              <div class="sum-sub">De tu bolsillo</div>
+            </div>
+            <div class="sum-card blue">
+              <div class="sum-label">Costo Empresa</div>
+              <div class="sum-val blue" id="sumEmpresa">—</div>
+              <div class="sum-sub">Lo que paga realmente</div>
+            </div>
+          </div>
+
+          <div class="progress-section">
+            <div class="progress-item">
+              <div class="progress-header">
+                <span>Salario Neto</span>
+                <span id="pctNeto" style="color:var(--green); font-weight:600">—%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" id="barNeto" style="background:var(--green-mid); width:0%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header">
+                <span>Descuentos Trabajador</span>
+                <span id="pctDesc" style="color:var(--red); font-weight:600">—%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" id="barDesc" style="background:var(--red-mid); width:0%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header">
+                <span>Aportes + Beneficios Empresa</span>
+                <span id="pctEmp" style="color:var(--blue-mid); font-weight:600">—%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" id="barEmp" style="background:var(--blue-mid); width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+
+        <!-- TRABAJADOR -->
+        <div class="card" style="animation-delay:0.15s">
+          <div class="card-header">
+            <div class="card-icon red">👤</div>
+            <div class="card-title">Descuentos Trabajador</div>
+          </div>
+          <div class="card-body">
+            <div class="result-section-title">AFP Obligatorio</div>
+            <div class="result-row">
+              <div class="result-label">Jubilación 10% <span class="tooltip-btn" data-tip="Aporta a tu cuenta individual de ahorro para el retiro en la AFP.">?</span></div>
+              <div class="result-val val-red" id="r_jub">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label">Riesgo Común 1.71% <span class="tooltip-btn" data-tip="Cubre invalidez y muerte por causas no laborales.">?</span></div>
+              <div class="result-val val-red" id="r_ries">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label">Comisión AFP 0.5% <span class="tooltip-btn" data-tip="Comisión que cobra la AFP por administrar tu fondo.">?</span></div>
+              <div class="result-val val-red" id="r_com">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label">Fondo Solidario 0.5% <span class="tooltip-btn" data-tip="Financia pensiones mínimas solidarias para trabajadores con bajos aportes.">?</span></div>
+              <div class="result-val val-red" id="r_sol">—</div>
+            </div>
+            <div class="divider"></div>
+            <div class="result-section-title">Aporte Solidario Adicional</div>
+            <div class="result-row">
+              <div class="result-label">Solidario Progresivo <span class="tooltip-btn" data-tip="+1.15% si ganas >13,000 Bs&#10;+5.74% si ganas >25,000 Bs&#10;+11.48% si ganas >35,000 Bs">?</span></div>
+              <div class="result-val val-amber" id="r_solProg">Bs. 0.00</div>
+            </div>
+            <div class="divider"></div>
+            <div class="result-row">
+              <div class="result-label" style="font-weight:600; color:var(--text)">Total Descuentos</div>
+              <div class="result-val val-red" id="r_totalDesc">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label" style="font-weight:700; color:var(--green); font-size:1rem">✅ Salario Neto</div>
+              <div class="result-val" style="color:var(--green); font-size:1.1rem" id="r_neto">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EMPRESA -->
+        <div class="card" style="animation-delay:0.2s">
+          <div class="card-header">
+            <div class="card-icon blue">🏢</div>
+            <div class="card-title">Aportes Empresa</div>
+          </div>
+          <div class="card-body">
+            <div class="result-section-title">Aportes Patronales</div>
+            <div class="result-row">
+              <div class="result-label">Caja de Salud 10% <span class="tooltip-btn" data-tip="Financia atención médica del trabajador y su familia en la Caja de Salud.">?</span></div>
+              <div class="result-val val-blue" id="r_salud">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label">Fondo Vivienda 2% <span class="tooltip-btn" data-tip="Aporte al Fondo de Vivienda Social (FONVIS) para créditos habitacionales.">?</span></div>
+              <div class="result-val val-blue" id="r_viv">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label">Riesgo Profesional <span class="tooltip-btn" data-tip="Seguro por accidentes de trabajo y enfermedades profesionales. Varía según sector.">?</span></div>
+              <div class="result-val val-blue" id="r_riesProf">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label">Aporte Solidario Pat. 3.5% <span class="tooltip-btn" data-tip="Contribución patronal al fondo solidario de pensiones.">?</span></div>
+              <div class="result-val val-blue" id="r_solPat">—</div>
+            </div>
+            <div class="divider"></div>
+            <div class="result-section-title">Beneficios Sociales (prorrateados)</div>
+            <div class="result-row">
+              <div class="result-label">Aguinaldo 8.33% <span class="tooltip-btn" data-tip="Equivale a 1 salario al año. Pagadero en diciembre.">?</span></div>
+              <div class="result-val val-amber" id="r_agui">—</div>
+            </div>
+            <div class="result-row" id="rowPrima">
+              <div class="result-label">Prima 8.33% <span class="tooltip-btn" data-tip="Solo si la empresa obtiene utilidades al cierre de gestión.">?</span></div>
+              <div class="result-val val-amber" id="r_prima">—</div>
+            </div>
+            <div class="result-row" id="rowQuinq">
+              <div class="result-label">Quinquenio 8.33% <span class="tooltip-btn" data-tip="Beneficio por cada 5 años continuos de trabajo.">?</span></div>
+              <div class="result-val val-amber" id="r_quinq">—</div>
+            </div>
+            <div class="divider"></div>
+            <div class="result-row">
+              <div class="result-label" style="font-weight:600; color:var(--text)">Total Aportes Patronales</div>
+              <div class="result-val val-blue" id="r_totalPat">—</div>
+            </div>
+            <div class="result-row">
+              <div class="result-label" style="font-weight:700; color:var(--blue-mid); font-size:1rem">💼 Costo Total Empresa</div>
+              <div class="result-val" style="color:var(--blue-mid); font-size:1.1rem" id="r_costoTotal">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CHARTS -->
+      <div class="card" style="animation-delay:0.25s; margin-top:16px">
+        <div class="card-header">
+          <div class="card-icon amber">📈</div>
+          <div class="card-title">Visualización</div>
+        </div>
+        <div class="card-body">
+          <div class="charts-grid">
+            <div class="chart-wrap">
+              <div class="chart-title">Distribución del Salario Bruto (Trabajador)</div>
+              <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-wrap">
+              <div class="chart-title">Salario Bruto vs. Costo Real Empresa</div>
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECCIÓN INFORMACIÓN ══ -->
+<div id="info" class="section">
+  <div class="info-section">
+    <h2>¿Qué necesitas saber sobre los aportes?</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">🏦</div>
+        <h3>¿Qué es la AFP?</h3>
+        <p>Las Administradoras de Fondos de Pensiones (AFP) son entidades que gestionan los fondos de jubilación de los trabajadores bolivianos. Tu aporte del 10% se deposita en tu cuenta individual para que puedas acceder a una renta vitalicia al momento de jubilarte.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚖️</div>
+        <h3>¿Qué es el Aporte Solidario?</h3>
+        <p>Es una contribución adicional que pagan los trabajadores de mayores ingresos para financiar una pensión mínima a quienes aportaron poco durante su vida laboral. Es un mecanismo de redistribución: quien más gana, más aporta.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📈</div>
+        <h3>¿Por qué aumenta con el salario?</h3>
+        <p>El aporte solidario es progresivo: se activa solo si ganas más de 13,000 Bs y aumenta según tu nivel de ingreso. Salarios sobre 25,000 Bs pagan 5.74% adicional, y sobre 35,000 Bs pagan 11.48% adicional.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🆚</div>
+        <h3>Dependiente vs Independiente</h3>
+        <p>Un trabajador <strong>dependiente</strong> tiene empleador que cubre los aportes patronales. Un trabajador <strong>independiente</strong> debe cubrir todos los aportes por su cuenta, incluidos los que normalmente paga la empresa.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⛏️</div>
+        <h3>¿Qué cambia según el sector?</h3>
+        <p>El aporte patronal por <strong>Riesgo Profesional</strong> varía según la peligrosidad del trabajo. Oficinas pagan 1.71%, construcción y minería pagan tasas más altas por el mayor riesgo de accidentes laborales.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🎁</div>
+        <h3>Beneficios Sociales</h3>
+        <p>El <strong>aguinaldo</strong> es obligatorio (1 salario en diciembre). La <strong>prima</strong> se paga solo si la empresa tiene utilidades. El <strong>quinquenio</strong> equivale a 1 salario cada 5 años de trabajo continuo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECCIÓN TABLA DE TASAS ══ -->
+<div id="tabla" class="section">
+  <div class="info-section">
+    <h2>Tasas Vigentes 2026</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon red">👤</div>
+          <div class="card-title">Aportes del Trabajador</div>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="rates-table">
+            <thead><tr><th>Concepto</th><th>Tasa</th></tr></thead>
+            <tbody>
+              <tr><td>Jubilación (AFP)</td><td><span class="pill red">10.00%</span></td></tr>
+              <tr><td>Riesgo Común</td><td><span class="pill red">1.71%</span></td></tr>
+              <tr><td>Comisión AFP</td><td><span class="pill red">0.50%</span></td></tr>
+              <tr><td>Fondo Solidario</td><td><span class="pill red">0.50%</span></td></tr>
+              <tr><td><strong>Total Base</strong></td><td><span class="pill red"><strong>12.71%</strong></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon amber">⚖️</div>
+          <div class="card-title">Aporte Solidario Progresivo</div>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="rates-table">
+            <thead><tr><th>Rango Salarial</th><th>Tasa Adicional</th></tr></thead>
+            <tbody>
+              <tr><td>Hasta 13,000 Bs</td><td><span class="pill amber">0%</span></td></tr>
+              <tr><td>&gt; 13,000 Bs</td><td><span class="pill amber">+1.15%</span></td></tr>
+              <tr><td>&gt; 25,000 Bs</td><td><span class="pill amber">+5.74%</span></td></tr>
+              <tr><td>&gt; 35,000 Bs</td><td><span class="pill amber">+11.48%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon blue">🏢</div>
+          <div class="card-title">Aportes del Empleador</div>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="rates-table">
+            <thead><tr><th>Concepto</th><th>Tasa</th></tr></thead>
+            <tbody>
+              <tr><td>Caja de Salud</td><td><span class="pill blue">10.00%</span></td></tr>
+              <tr><td>Fondo de Vivienda</td><td><span class="pill blue">2.00%</span></td></tr>
+              <tr><td>Riesgo Profesional (oficina)</td><td><span class="pill blue">1.71%</span></td></tr>
+              <tr><td>Aporte Solidario Patronal</td><td><span class="pill blue">3.50%</span></td></tr>
+              <tr><td><strong>Total Mínimo</strong></td><td><span class="pill blue"><strong>17.21%</strong></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon green">🎁</div>
+          <div class="card-title">Beneficios Sociales (prorrateados)</div>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="rates-table">
+            <thead><tr><th>Concepto</th><th>Mensual</th><th>Anual</th></tr></thead>
+            <tbody>
+              <tr><td>Aguinaldo</td><td><span class="pill amber">8.33%</span></td><td>1 salario</td></tr>
+              <tr><td>Prima (si hay utilidades)</td><td><span class="pill amber">8.33%</span></td><td>1 salario</td></tr>
+              <tr><td>Quinquenio</td><td><span class="pill amber">8.33%</span></td><td>c/5 años</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- end main-wrap -->
+
+<footer>
+  <strong>AportesBO 2026</strong> — Calculadora de Aportes Laborales Bolivia<br>
+  <span class="footer-note">⚠️ Esta herramienta es orientativa. Consulta a un profesional contable para casos específicos. Normativa vigente gestión 2026.</span>
+</footer>
+
+<script>
+// ── THEME ──
+function toggleTheme() {
+  const root = document.documentElement;
+  const isDark = root.getAttribute('data-theme') === 'dark';
+  root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.querySelector('.theme-btn').textContent = isDark ? '🌙' : '☀️';
+  calculate();
+}
+
+// ── NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav a').forEach((a,i) => {
+    a.classList.toggle('active', ['calc','info','tabla'][i] === id);
+  });
+}
+
+// ── SECTOR ──
+function sectorChange() {
+  const sel = document.getElementById('sector');
+  const inp = document.getElementById('sectorRate');
+  if (sel.value !== 'custom') inp.value = sel.value;
+  calculate();
+}
+
+// ── FORMAT ──
+function fmt(n) { return 'Bs. ' + n.toLocaleString('es-BO', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function pct(n, tot) { return ((n/tot)*100).toFixed(1) + '%'; }
+
+// ── CHARTS ──
+let pieChart, barChart;
+function initCharts() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textColor = isDark ? '#a8a8a0' : '#5a5a55';
+  const gridColor = isDark ? '#2e2f2b' : '#e2e1db';
+
+  if (pieChart) pieChart.destroy();
+  if (barChart) barChart.destroy();
+
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  pieChart = new Chart(pieCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Salario Neto', 'AFP Base', 'Solidario Prog.'],
+      datasets: [{ data: [0, 0, 0], backgroundColor: ['#2fa86a', '#e05c4e', '#b5700a'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: textColor, boxWidth: 10, padding: 10, font: { family: 'DM Sans', size: 11 } } },
+        tooltip: { callbacks: { label: ctx => ' Bs. ' + ctx.raw.toLocaleString('es-BO', {minimumFractionDigits:2}) } }
+      },
+      cutout: '65%'
+    }
+  });
+
+  const barCtx = document.getElementById('barChart').getContext('2d');
+  barChart = new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Salario Bruto', 'Costo Empresa'],
+      datasets: [{
+        data: [0, 0],
+        backgroundColor: ['rgba(47,168,106,0.85)', 'rgba(50,105,196,0.85)'],
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' Bs. ' + ctx.raw.toLocaleString('es-BO', {minimumFractionDigits:2}) } }
+      },
+      scales: {
+        x: { ticks: { color: textColor, font: { family: 'DM Sans' } }, grid: { display: false } },
+        y: { ticks: { color: textColor, font: { family: 'DM Sans', size: 10 }, callback: v => 'Bs.' + (v/1000).toFixed(0)+'k' }, grid: { color: gridColor } }
+      }
+    }
+  });
+}
+
+// ── CALCULATE ──
+function calculate() {
+  const salary = parseFloat(document.getElementById('salary').value) || 0;
+  const sectorRate = parseFloat(document.getElementById('sectorRate').value) || 1.71;
+  const hasAguinaldo = document.getElementById('chkAguinaldo').checked;
+  const hasPrima = document.getElementById('chkPrima').checked;
+  const hasQuinquenio = document.getElementById('chkQuinquenio').checked;
+
+  // ─ TRABAJADOR ─
+  const jub = salary * 0.10;
+  const riesgo = salary * 0.0171;
+  const comision = salary * 0.005;
+  const solBase = salary * 0.005;
+
+  // Solidario progresivo
+  let solPct = 0;
+  if (salary > 35000) solPct = 0.1148;
+  else if (salary > 25000) solPct = 0.0574;
+  else if (salary > 13000) solPct = 0.0115;
+  const solProg = salary * solPct;
+
+  const totalDesc = jub + riesgo + comision + solBase + solProg;
+  const neto = salary - totalDesc;
+
+  // ─ EMPRESA ─
+  const salud = salary * 0.10;
+  const viv = salary * 0.02;
+  const riesProf = salary * (sectorRate / 100);
+  const solPat = salary * 0.035;
+
+  const aguinaldo = hasAguinaldo ? salary * 0.0833 : 0;
+  const prima = hasPrima ? salary * 0.0833 : 0;
+  const quinquenio = hasQuinquenio ? salary * 0.0833 : 0;
+
+  const totalPat = salud + viv + riesProf + solPat + aguinaldo + prima + quinquenio;
+  const costoTotal = salary + totalPat;
+  const cargaLaboral = salary > 0 ? ((costoTotal - salary) / salary * 100) : 0;
+
+  // ─ RENDER ─
+  document.getElementById('r_jub').textContent = fmt(jub);
+  document.getElementById('r_ries').textContent = fmt(riesgo);
+  document.getElementById('r_com').textContent = fmt(comision);
+  document.getElementById('r_sol').textContent = fmt(solBase);
+  document.getElementById('r_solProg').textContent = solProg > 0 ? fmt(solProg) + ` (${(solPct*100).toFixed(2)}%)` : 'Bs. 0.00';
+  document.getElementById('r_totalDesc').textContent = fmt(totalDesc);
+  document.getElementById('r_neto').textContent = fmt(neto);
+
+  document.getElementById('r_salud').textContent = fmt(salud);
+  document.getElementById('r_viv').textContent = fmt(viv);
+  document.getElementById('r_riesProf').textContent = fmt(riesProf) + ` (${sectorRate.toFixed(2)}%)`;
+  document.getElementById('r_solPat').textContent = fmt(solPat);
+  document.getElementById('r_agui').textContent = hasAguinaldo ? fmt(aguinaldo) : 'No incluido';
+  document.getElementById('r_prima').textContent = hasPrima ? fmt(prima) : 'No incluido';
+  document.getElementById('r_quinq').textContent = hasQuinquenio ? fmt(quinquenio) : 'No incluido';
+  document.getElementById('r_totalPat').textContent = fmt(totalPat);
+  document.getElementById('r_costoTotal').textContent = fmt(costoTotal);
+
+  // Summary
+  document.getElementById('sumNeto').textContent = fmt(neto);
+  document.getElementById('sumDescuentos').textContent = fmt(totalDesc);
+  document.getElementById('sumEmpresa').textContent = fmt(costoTotal);
+
+  // Progress bars
+  if (costoTotal > 0) {
+    const pN = (neto / costoTotal * 100);
+    const pD = (totalDesc / costoTotal * 100);
+    const pE = (totalPat / costoTotal * 100);
+    document.getElementById('barNeto').style.width = pN + '%';
+    document.getElementById('barDesc').style.width = pD + '%';
+    document.getElementById('barEmp').style.width = pE + '%';
+    document.getElementById('pctNeto').textContent = pN.toFixed(1) + '%';
+    document.getElementById('pctDesc').textContent = pD.toFixed(1) + '%';
+    document.getElementById('pctEmp').textContent = pE.toFixed(1) + '%';
+  }
+
+  // Solidario alert
+  const alert = document.getElementById('solidarioAlert');
+  alert.classList.toggle('show', salary > 13000);
+
+  // Charts
+  if (pieChart) {
+    pieChart.data.datasets[0].data = [neto, jub + riesgo + comision + solBase, solProg];
+    pieChart.update('none');
+  }
+  if (barChart) {
+    barChart.data.datasets[0].data = [salary, costoTotal];
+    barChart.update('none');
+  }
+}
+
+// ── EXPORT ──
+async function exportImage() {
+  const el = document.getElementById('resultsPanel');
+  try {
+    const canvas = await html2canvas(el, { backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() || '#fff', scale: 2 });
+    const a = document.createElement('a');
+    a.download = 'aportes-bo-2026.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  } catch(e) { alert('Error al exportar. Intenta de nuevo.'); }
+}
+
+// ── INIT ──
+initCharts();
+calculate();
+
+// Re-init charts on theme change
+const origToggle = toggleTheme;
+</script>
+</body>
+</html>
