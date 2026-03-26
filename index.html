@@ -295,7 +295,7 @@ footer strong{color:var(--text2)}
           <div class="smn-row">
             <div class="smn-item"><div class="smn-label">Salario Bruto <span class="tip" data-tip="Salario antes de descuentos">?</span></div><div class="smn-value" id="smnGross">— <small>SMN</small></div><div class="smn-note">≈ equivalente a</div></div>
             <div class="smn-item"><div class="smn-label">Salario Neto <span class="tip" data-tip="Lo que recibes después de descuentos">?</span></div><div class="smn-value" id="smnNet">— <small>SMN</small></div><div class="smn-note">poder adquisitivo real</div></div>
-            <div class="smn-item"><div class="smn-label">Salario Mínimo (SMN) <span class="tip" data-tip="Referencia 2026 según Decreto 5503. Valor estimado Bs 2,500">?</span></div><div class="smn-value">Bs 2,500</div><div class="smn-note">* base orientativa</div></div>
+            <div class="smn-item"><div class="smn-label">Salario Mínimo (SMN) <span class="tip" data-tip="Referencia 2026 según Decreto 5503. Valor estimado Bs 2,500">?</span></div><div class="smn-value">Bs 3,300</div><div class="smn-note">* base orientativa</div></div>
           </div>
         </div>
       </div>
@@ -369,7 +369,7 @@ function sectorChange(){
   calculate();
 }
 function fmt(n){return'Bs. '+(n||0).toLocaleString('es-BO',{minimumFractionDigits:2,maximumFractionDigits:2})}
-const SMN = 2500; // Salario Mínimo Nacional referencial 2026 (Decreto 5503)
+const SMN = 3300; // Salario Mínimo Nacional referencial 2026 (Decreto 5503)
 
 let pieChart,barChart;
 function initCharts(){
