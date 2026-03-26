@@ -126,14 +126,6 @@ input[type="number"]:focus,select:focus{border-color:var(--green-mid);box-shadow
 .prog-track{height:6px;background:var(--surface2);border-radius:100px;overflow:hidden}
 .prog-fill{height:100%;border-radius:100px;transition:width .55s cubic-bezier(.4,0,.2,1)}
 
-/* SMN ADDITION */
-.smn-row{background:var(--surface2);border-radius:var(--r-sm);margin-top:14px;padding:12px;border:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center}
-.smn-item{flex:1;min-width:120px}
-.smn-label{font-size:0.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:4px}
-.smn-value{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text);margin-top:4px}
-.smn-note{font-size:0.68rem;color:var(--text3);margin-top:2px}
-.smn-value small{font-weight:400;font-size:0.7rem;color:var(--text2)}
-
 /* RESULT ROWS */
 .sec-title{font-size:0.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:2px}
 .rr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border);gap:8px}
@@ -182,9 +174,6 @@ input[type="number"]:focus,select:focus{border-color:var(--green-mid);box-shadow
 .info-ico svg{width:18px;height:18px}
 .info-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;margin-bottom:7px}
 .info-card p{font-size:0.83rem;color:var(--text2);line-height:1.6}
-.info-links{margin-top:14px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.info-links a{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);padding:6px 12px;border-radius:30px;font-size:0.75rem;font-weight:500;color:var(--blue-mid);text-decoration:none;border:1px solid var(--border);transition:all var(--ease)}
-.info-links a:hover{background:var(--border);color:var(--blue)}
 
 /* TABLE */
 .rates-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
@@ -206,6 +195,7 @@ footer strong{color:var(--text2)}
 </style>
 </head>
 
+<!-- SVG SYMBOL DEFS -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
   <symbol id="i-calc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></symbol>
@@ -231,7 +221,6 @@ footer strong{color:var(--text2)}
   <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
   <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
 </svg>
 
 <body>
@@ -239,7 +228,7 @@ footer strong{color:var(--text2)}
 <header class="header">
   <a class="logo" href="#">
     <div class="logo-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
     </div>
     Aportes<span>BO</span>
   </a>
@@ -255,7 +244,7 @@ footer strong{color:var(--text2)}
 
 <div class="hero">
   <div class="hero-badge">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     Gestión 2026 · Normativa Vigente
   </div>
   <h1>Calculadora de<br><em>Aportes Laborales</em><br>Bolivia</h1>
@@ -269,64 +258,204 @@ footer strong{color:var(--text2)}
 <!-- CALCULADORA -->
 <div id="calc" class="section active">
   <div class="main-grid">
+
     <div>
       <div class="card">
-        <div class="ch"><div class="ci g"><svg><use href="#i-gear"/></svg></div><span class="ct">Datos del Trabajador</span></div>
+        <div class="ch">
+          <div class="ci g"><svg><use href="#i-gear"/></svg></div>
+          <span class="ct">Datos del Trabajador</span>
+        </div>
         <div class="cb">
-          <div class="fg"><label class="fl">Salario Mensual Bruto</label><div class="iw"><span class="ip"><svg><use href="#i-dollar"/></svg></span><input type="number" id="salary" value="5000" min="0" step="100" oninput="calculate()" inputmode="numeric"/></div></div>
-          <div class="fg"><label class="fl">Tipo de Trabajador</label><div class="iw"><span class="ip"><svg><use href="#i-user"/></svg></span><select id="workerType" onchange="calculate()" style="padding-left:34px"><option value="dep">Dependiente (relación de dependencia)</option><option value="ind">Independiente (cuenta propia)</option></select></div></div>
-          <div class="fg"><label class="fl">Sector / Riesgo Profesional Patronal</label><div class="sector-row"><div class="iw" style="flex:1"><span class="ip"><svg><use href="#i-hat"/></svg></span><select id="sector" onchange="sectorChange()" style="padding-left:34px"><option value="1.71">Oficina / Comercio (1.71%)</option><option value="2.5">Construcción (2.5%)</option><option value="3.5">Minería (3.5%)</option><option value="custom">Personalizado</option></select></div><input type="number" id="sectorRate" class="sector-inp" value="1.71" step="0.01" min="0" max="20" oninput="calculate()" inputmode="decimal"/></div></div>
-          <div class="fg"><label class="fl">Beneficios Sociales a incluir</label><div class="checks"><label class="check-item"><input type="checkbox" id="chkAguinaldo" checked onchange="calculate()"/><div class="ck-icon" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-gift"/></svg></div><div><div class="ck-name">Aguinaldo (8.33%)</div><div class="ck-desc">Obligatorio · 1 sueldo en diciembre</div></div></label><label class="check-item"><input type="checkbox" id="chkPrima" onchange="calculate()"/><div class="ck-icon" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-trend"/></svg></div><div><div class="ck-name">Prima (8.33%)</div><div class="ck-desc">Solo si la empresa tiene utilidades</div></div></label><label class="check-item"><input type="checkbox" id="chkQuinquenio" onchange="calculate()"/><div class="ck-icon" style="background:var(--green-light);color:var(--green)"><svg><use href="#i-cal"/></svg></div><div><div class="ck-name">Quinquenio (8.33%)</div><div class="ck-desc">Cada 5 años de antigüedad continua</div></div></label></div></div>
-          <div class="alert-solid" id="solidarioAlert"><svg><use href="#i-alert"/></svg><span id="solidarioMsg">Tu salario activa el <strong>Aporte Solidario Progresivo.</strong></span></div>
+          <div class="fg">
+            <label class="fl">Salario Mensual Bruto</label>
+            <div class="iw">
+              <span class="ip"><svg><use href="#i-dollar"/></svg></span>
+              <input type="number" id="salary" value="5000" min="0" step="100" oninput="calculate()" inputmode="numeric"/>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Tipo de Trabajador</label>
+            <div class="iw">
+              <span class="ip"><svg><use href="#i-user"/></svg></span>
+              <select id="workerType" onchange="calculate()" style="padding-left:34px">
+                <option value="dep">Dependiente (relación de dependencia)</option>
+                <option value="ind">Independiente (cuenta propia)</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Sector / Riesgo Profesional Patronal</label>
+            <div class="sector-row">
+              <div class="iw" style="flex:1">
+                <span class="ip"><svg><use href="#i-hat"/></svg></span>
+                <select id="sector" onchange="sectorChange()" style="padding-left:34px">
+                  <option value="1.71">Oficina / Comercio (1.71%)</option>
+                  <option value="2.5">Construcción (2.5%)</option>
+                  <option value="3.5">Minería (3.5%)</option>
+                  <option value="custom">Personalizado</option>
+                </select>
+              </div>
+              <input type="number" id="sectorRate" class="sector-inp" value="1.71" step="0.01" min="0" max="20" oninput="calculate()" inputmode="decimal"/>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Beneficios Sociales a incluir</label>
+            <div class="checks">
+              <label class="check-item">
+                <input type="checkbox" id="chkAguinaldo" checked onchange="calculate()"/>
+                <div class="ck-icon" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-gift"/></svg></div>
+                <div><div class="ck-name">Aguinaldo (8.33%)</div><div class="ck-desc">Obligatorio · 1 sueldo en diciembre</div></div>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" id="chkPrima" onchange="calculate()"/>
+                <div class="ck-icon" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-trend"/></svg></div>
+                <div><div class="ck-name">Prima (8.33%)</div><div class="ck-desc">Solo si la empresa tiene utilidades</div></div>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" id="chkQuinquenio" onchange="calculate()"/>
+                <div class="ck-icon" style="background:var(--green-light);color:var(--green)"><svg><use href="#i-cal"/></svg></div>
+                <div><div class="ck-name">Quinquenio (8.33%)</div><div class="ck-desc">Cada 5 años de antigüedad continua</div></div>
+              </label>
+            </div>
+          </div>
+          <div class="alert-solid" id="solidarioAlert">
+            <svg><use href="#i-alert"/></svg>
+            <span id="solidarioMsg">Tu salario activa el <strong>Aporte Solidario Progresivo.</strong></span>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- RESULTS -->
     <div id="resultsPanel">
+      <!-- SUMMARY -->
       <div class="card" style="animation-delay:.06s;margin-bottom:14px">
-        <div class="ch"><div class="ci g"><svg><use href="#i-pie"/></svg></div><span class="ct">Resumen Ejecutivo</span><button class="exp-btn" onclick="exportImage()"><svg><use href="#i-dl"/></svg>Exportar</button></div>
+        <div class="ch">
+          <div class="ci g"><svg><use href="#i-pie"/></svg></div>
+          <span class="ct">Resumen Ejecutivo</span>
+          <button class="exp-btn" onclick="exportImage()"><svg><use href="#i-dl"/></svg>Exportar</button>
+        </div>
         <div class="cb">
-          <div class="sum-strip"><div class="sc g"><div class="sc-lbl">Salario Neto</div><div class="sc-val" id="sumNeto">—</div><div class="sc-sub">Lo que recibes</div></div><div class="sc r"><div class="sc-lbl">Descuentos</div><div class="sc-val" id="sumDesc">—</div><div class="sc-sub">De tu bolsillo</div></div><div class="sc b"><div class="sc-lbl">Costo Empresa</div><div class="sc-val" id="sumCosto">—</div><div class="sc-sub">Pago real total</div></div></div>
-          <div class="prog-block"><div class="prog-head"><span>Salario Neto</span><span id="pN" style="color:var(--green);font-weight:700">—</span></div><div class="prog-track"><div class="prog-fill" id="bN" style="background:var(--green-mid);width:0%"></div></div></div>
-          <div class="prog-block"><div class="prog-head"><span>Descuentos Trabajador</span><span id="pD" style="color:var(--red);font-weight:700">—</span></div><div class="prog-track"><div class="prog-fill" id="bD" style="background:var(--red-mid);width:0%"></div></div></div>
-          <div class="prog-block"><div class="prog-head"><span>Aportes + Beneficios Empresa</span><span id="pE" style="color:var(--blue-mid);font-weight:700">—</span></div><div class="prog-track"><div class="prog-fill" id="bE" style="background:var(--blue-mid);width:0%"></div></div></div>
-
-          <!-- NUEVO: Equivalencia en Salarios Mínimos -->
-          <div class="smn-row">
-            <div class="smn-item"><div class="smn-label">Salario Bruto <span class="tip" data-tip="Salario antes de descuentos">?</span></div><div class="smn-value" id="smnGross">— <small>SMN</small></div><div class="smn-note">≈ equivalente a</div></div>
-            <div class="smn-item"><div class="smn-label">Salario Neto <span class="tip" data-tip="Lo que recibes después de descuentos">?</span></div><div class="smn-value" id="smnNet">— <small>SMN</small></div><div class="smn-note">poder adquisitivo real</div></div>
-            <div class="smn-item"><div class="smn-label">Salario Mínimo (SMN) <span class="tip" data-tip="Referencia 2026 según Decreto 5503. Valor estimado Bs 2,500">?</span></div><div class="smn-value">Bs 2,500</div><div class="smn-note">* base orientativa</div></div>
+          <div class="sum-strip">
+            <div class="sc g"><div class="sc-lbl">Salario Neto</div><div class="sc-val" id="sumNeto">—</div><div class="sc-sub">Lo que recibes</div></div>
+            <div class="sc r"><div class="sc-lbl">Descuentos</div><div class="sc-val" id="sumDesc">—</div><div class="sc-sub">De tu bolsillo</div></div>
+            <div class="sc b"><div class="sc-lbl">Costo Empresa</div><div class="sc-val" id="sumCosto">—</div><div class="sc-sub">Pago real total</div></div>
+          </div>
+          <div class="prog-block">
+            <div class="prog-head"><span>Salario Neto</span><span id="pN" style="color:var(--green);font-weight:700">—</span></div>
+            <div class="prog-track"><div class="prog-fill" id="bN" style="background:var(--green-mid);width:0%"></div></div>
+          </div>
+          <div class="prog-block">
+            <div class="prog-head"><span>Descuentos Trabajador</span><span id="pD" style="color:var(--red);font-weight:700">—</span></div>
+            <div class="prog-track"><div class="prog-fill" id="bD" style="background:var(--red-mid);width:0%"></div></div>
+          </div>
+          <div class="prog-block">
+            <div class="prog-head"><span>Aportes + Beneficios Empresa</span><span id="pE" style="color:var(--blue-mid);font-weight:700">—</span></div>
+            <div class="prog-track"><div class="prog-fill" id="bE" style="background:var(--blue-mid);width:0%"></div></div>
           </div>
         </div>
       </div>
 
+      <!-- TWO COLS -->
       <div class="res-cols">
-        <div class="card"><div class="ch"><div class="ci r"><svg><use href="#i-user"/></svg></div><span class="ct">Descuentos Trabajador</span></div><div class="cb"><div class="sec-title">AFP Base</div><div class="rr"><div class="rl">Jubilación 10%<span class="tip" data-tip="Va a tu cuenta individual de ahorro para el retiro en la AFP.">?</span></div><div class="rv r" id="r_jub">—</div></div><div class="rr"><div class="rl">Riesgo Común 1.71%<span class="tip" data-tip="Cubre invalidez y muerte por causas no laborales.">?</span></div><div class="rv r" id="r_ries">—</div></div><div class="rr"><div class="rl">Comisión AFP 0.5%<span class="tip" data-tip="Comisión por administrar tu fondo de pensiones.">?</span></div><div class="rv r" id="r_com">—</div></div><div class="rr"><div class="rl">Fondo Solidario 0.5%<span class="tip" data-tip="Financia pensiones mínimas solidarias.">?</span></div><div class="rv r" id="r_sol">—</div></div><div class="divider"></div><div class="sec-title">Solidario Adicional</div><div class="rr"><div class="rl">Progresivo<span class="tip" data-tip="> 13,000: +1.15%&#10;> 25,000: +5.74%&#10;> 35,000: +11.48%">?</span></div><div class="rv a" id="r_solProg">Bs. 0.00</div></div><div class="divider"></div><div class="rr"><div class="rl bold">Total Descuentos</div><div class="rv r big" id="r_totalDesc">—</div></div><div class="hl-row" style="background:var(--green-light);margin-top:6px"><div class="hl-label" style="color:var(--green)"><svg><use href="#i-check"/></svg>Salario Neto</div><div class="rv big" style="color:var(--green)" id="r_neto">—</div></div></div></div>
-        <div class="card"><div class="ch"><div class="ci b"><svg><use href="#i-building"/></svg></div><span class="ct">Aportes Empresa</span></div><div class="cb"><div class="sec-title">Patronales</div><div class="rr"><div class="rl">Caja Salud 10%<span class="tip" data-tip="Atención médica del trabajador y su familia.">?</span></div><div class="rv b" id="r_salud">—</div></div><div class="rr"><div class="rl">Fondo Vivienda 2%<span class="tip" data-tip="Aporte al FONVIS para créditos habitacionales.">?</span></div><div class="rv b" id="r_viv">—</div></div><div class="rr"><div class="rl">Riesgo Profesional<span class="tip" data-tip="Seguro por accidentes laborales. Varía por sector.">?</span></div><div class="rv b" id="r_riesProf">—</div></div><div class="rr"><div class="rl">Solidario Patronal 3.5%<span class="tip" data-tip="Contribución al fondo solidario de pensiones.">?</span></div><div class="rv b" id="r_solPat">—</div></div><div class="divider"></div><div class="sec-title">Beneficios Sociales</div><div class="rr"><div class="rl">Aguinaldo 8.33%</div><div class="rv a" id="r_agui">—</div></div><div class="rr"><div class="rl">Prima 8.33%</div><div class="rv a" id="r_prima">—</div></div><div class="rr"><div class="rl">Quinquenio 8.33%</div><div class="rv a" id="r_quinq">—</div></div><div class="divider"></div><div class="rr"><div class="rl bold">Total Aportes</div><div class="rv b big" id="r_totalPat">—</div></div><div class="hl-row" style="background:var(--blue-light);margin-top:6px"><div class="hl-label" style="color:var(--blue)"><svg><use href="#i-briefcase"/></svg>Costo Total</div><div class="rv big" style="color:var(--blue-mid)" id="r_costoTotal">—</div></div></div></div>
+        <!-- TRABAJADOR -->
+        <div class="card" style="animation-delay:.1s">
+          <div class="ch"><div class="ci r"><svg><use href="#i-user"/></svg></div><span class="ct">Descuentos Trabajador</span></div>
+          <div class="cb">
+            <div class="sec-title">AFP Base</div>
+            <div class="rr"><div class="rl">Jubilación 10%<span class="tip" data-tip="Va a tu cuenta individual de ahorro para el retiro en la AFP.">?</span></div><div class="rv r" id="r_jub">—</div></div>
+            <div class="rr"><div class="rl">Riesgo Común 1.71%<span class="tip" data-tip="Cubre invalidez y muerte por causas no laborales.">?</span></div><div class="rv r" id="r_ries">—</div></div>
+            <div class="rr"><div class="rl">Comisión AFP 0.5%<span class="tip" data-tip="Comisión por administrar tu fondo de pensiones.">?</span></div><div class="rv r" id="r_com">—</div></div>
+            <div class="rr"><div class="rl">Fondo Solidario 0.5%<span class="tip" data-tip="Financia pensiones mínimas solidarias.">?</span></div><div class="rv r" id="r_sol">—</div></div>
+            <div class="divider"></div>
+            <div class="sec-title">Solidario Adicional</div>
+            <div class="rr"><div class="rl">Progresivo<span class="tip" data-tip="> 13,000: +1.15%&#10;> 25,000: +5.74%&#10;> 35,000: +11.48%">?</span></div><div class="rv a" id="r_solProg">Bs. 0.00</div></div>
+            <div class="divider"></div>
+            <div class="rr"><div class="rl bold">Total Descuentos</div><div class="rv r big" id="r_totalDesc">—</div></div>
+            <div class="hl-row" style="background:var(--green-light);margin-top:6px">
+              <div class="hl-label" style="color:var(--green)"><svg><use href="#i-check"/></svg>Salario Neto</div>
+              <div class="rv big" style="color:var(--green)" id="r_neto">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EMPRESA -->
+        <div class="card" style="animation-delay:.14s">
+          <div class="ch"><div class="ci b"><svg><use href="#i-building"/></svg></div><span class="ct">Aportes Empresa</span></div>
+          <div class="cb">
+            <div class="sec-title">Patronales</div>
+            <div class="rr"><div class="rl">Caja Salud 10%<span class="tip" data-tip="Atención médica del trabajador y su familia.">?</span></div><div class="rv b" id="r_salud">—</div></div>
+            <div class="rr"><div class="rl">Fondo Vivienda 2%<span class="tip" data-tip="Aporte al FONVIS para créditos habitacionales.">?</span></div><div class="rv b" id="r_viv">—</div></div>
+            <div class="rr"><div class="rl">Riesgo Profesional<span class="tip" data-tip="Seguro por accidentes laborales. Varía por sector.">?</span></div><div class="rv b" id="r_riesProf">—</div></div>
+            <div class="rr"><div class="rl">Solidario Patronal 3.5%<span class="tip" data-tip="Contribución al fondo solidario de pensiones.">?</span></div><div class="rv b" id="r_solPat">—</div></div>
+            <div class="divider"></div>
+            <div class="sec-title">Beneficios Sociales</div>
+            <div class="rr"><div class="rl">Aguinaldo 8.33%</div><div class="rv a" id="r_agui">—</div></div>
+            <div class="rr"><div class="rl">Prima 8.33%</div><div class="rv a" id="r_prima">—</div></div>
+            <div class="rr"><div class="rl">Quinquenio 8.33%</div><div class="rv a" id="r_quinq">—</div></div>
+            <div class="divider"></div>
+            <div class="rr"><div class="rl bold">Total Aportes</div><div class="rv b big" id="r_totalPat">—</div></div>
+            <div class="hl-row" style="background:var(--blue-light);margin-top:6px">
+              <div class="hl-label" style="color:var(--blue)"><svg><use href="#i-briefcase"/></svg>Costo Total</div>
+              <div class="rv big" style="color:var(--blue-mid)" id="r_costoTotal">—</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card"><div class="ch"><div class="ci a"><svg><use href="#i-pie"/></svg></div><span class="ct">Visualización</span></div><div class="cb"><div class="charts-grid"><div class="chart-wrap"><div class="chart-lbl">Distribución Salario Bruto</div><canvas id="pieChart" height="180"></canvas></div><div class="chart-wrap"><div class="chart-lbl">Salario Bruto vs. Costo Empresa</div><canvas id="barChart" height="180"></canvas></div></div></div></div>
+
+      <!-- CHARTS -->
+      <div class="card" style="animation-delay:.18s">
+        <div class="ch"><div class="ci a"><svg><use href="#i-pie"/></svg></div><span class="ct">Visualización</span></div>
+        <div class="cb">
+          <div class="charts-grid">
+            <div class="chart-wrap">
+              <div class="chart-lbl">Distribución Salario Bruto</div>
+              <canvas id="pieChart" height="180"></canvas>
+            </div>
+            <div class="chart-wrap">
+              <div class="chart-lbl">Salario Bruto vs. Costo Empresa</div>
+              <canvas id="barChart" height="180"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- INFORMACIÓN (con enlaces externos) -->
+<!-- INFORMACIÓN -->
 <div id="info" class="section">
   <p class="info-title">¿Qué necesitas saber?</p>
   <div class="info-grid">
-    <div class="info-card"><div class="info-ico" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-bank"/></svg></div><h3>¿Qué es la AFP?</h3><p>Las Administradoras de Fondos de Pensiones gestionan tus ahorros para el retiro. El 10% de jubilación va a tu cuenta individual y te garantiza una renta al jubilarte.</p></div>
-    <div class="info-card"><div class="info-ico" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-heart"/></svg></div><h3>¿Qué es el Aporte Solidario?</h3><p>Es una contribución progresiva de trabajadores con altos ingresos para financiar pensiones mínimas a quienes aportaron poco. Quien más gana, más aporta al fondo solidario.</p></div>
-    <div class="info-card"><div class="info-ico" style="background:var(--red-light);color:var(--red)"><svg><use href="#i-trend"/></svg></div><h3>¿Por qué aumenta con el salario?</h3><p>El sistema es progresivo. Se activa solo sobre 13,000 Bs y escala en 3 tramos: 1.15%, 5.74% y 11.48%. Salarios bajos no pagan nada adicional por este concepto.</p></div>
-    <div class="info-card"><div class="info-ico" style="background:var(--green-light);color:var(--green)"><svg><use href="#i-users"/></svg></div><h3>Dependiente vs. Independiente</h3><p>El trabajador <strong>dependiente</strong> tiene empleador que cubre los aportes patronales. El <strong>independiente</strong> asume todos los costos, incluidos los que paga la empresa.</p></div>
-    <div class="info-card"><div class="info-ico" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-hat"/></svg></div><h3>¿Qué cambia según sector?</h3><p>El Riesgo Profesional varía según la peligrosidad de la actividad. Oficinas pagan 1.71%, construcción y minería tienen tasas más altas por mayor riesgo de accidentes laborales.</p></div>
-    <div class="info-card"><div class="info-ico" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-gift"/></svg></div><h3>Beneficios Sociales</h3><p>El <strong>aguinaldo</strong> es obligatorio (1 salario en diciembre). La <strong>prima</strong> se paga si hay utilidades. El <strong>quinquenio</strong> equivale a 1 salario por cada 5 años continuos.</p></div>
-    <div class="info-card" style="grid-column: span 1;">
-      <div class="info-ico" style="background:var(--surface2);color:var(--blue-mid)"><svg><use href="#i-link"/></svg></div>
-      <h3>Fuentes y normativa 2026</h3>
-      <p>Consulta los decretos y análisis que respaldan esta simulación. La gestión 2026 incorpora el Decreto Supremo N° 5503 y las tasas actualizadas del sistema de pensiones y riesgos laborales.</p>
-      <div class="info-links">
-        <a href="https://emba.com.bo/el-decreto-n-5503-y-el-nuevo-rumbo-laboral-en-bolivia/" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Decreto 5503 · EMBA</a>
-        <a href="https://www.facebook.com/100057360283193/posts/salarios-y-aportes-bolivia-2026bolivia-decreto5503/1396687328919930/" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Análisis Facebook · Aportes 2026</a>
-      </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-bank"/></svg></div>
+      <h3>¿Qué es la AFP?</h3>
+      <p>Las Administradoras de Fondos de Pensiones gestionan tus ahorros para el retiro. El 10% de jubilación va a tu cuenta individual y te garantiza una renta al jubilarte.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-heart"/></svg></div>
+      <h3>¿Qué es el Aporte Solidario?</h3>
+      <p>Es una contribución progresiva de trabajadores con altos ingresos para financiar pensiones mínimas a quienes aportaron poco. Quien más gana, más aporta al fondo solidario.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--red-light);color:var(--red)"><svg><use href="#i-trend"/></svg></div>
+      <h3>¿Por qué aumenta con el salario?</h3>
+      <p>El sistema es progresivo. Se activa solo sobre 13,000 Bs y escala en 3 tramos: 1.15%, 5.74% y 11.48%. Salarios bajos no pagan nada adicional por este concepto.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--green-light);color:var(--green)"><svg><use href="#i-users"/></svg></div>
+      <h3>Dependiente vs. Independiente</h3>
+      <p>El trabajador <strong>dependiente</strong> tiene empleador que cubre los aportes patronales. El <strong>independiente</strong> asume todos los costos, incluidos los que paga la empresa.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--amber-light);color:var(--amber)"><svg><use href="#i-hat"/></svg></div>
+      <h3>¿Qué cambia según sector?</h3>
+      <p>El Riesgo Profesional varía según la peligrosidad de la actividad. Oficinas pagan 1.71%, construcción y minería tienen tasas más altas por mayor riesgo de accidentes laborales.</p>
+    </div>
+    <div class="info-card">
+      <div class="info-ico" style="background:var(--blue-light);color:var(--blue)"><svg><use href="#i-gift"/></svg></div>
+      <h3>Beneficios Sociales</h3>
+      <p>El <strong>aguinaldo</strong> es obligatorio (1 salario en diciembre). La <strong>prima</strong> se paga si hay utilidades. El <strong>quinquenio</strong> equivale a 1 salario por cada 5 años continuos.</p>
     </div>
   </div>
 </div>
@@ -335,17 +464,70 @@ footer strong{color:var(--text2)}
 <div id="tabla" class="section">
   <p class="info-title">Tasas Vigentes 2026</p>
   <div class="rates-grid">
-    <div class="card"><div class="ch"><div class="ci r"><svg><use href="#i-user"/></svg></div><span class="ct">Aportes del Trabajador</span></div><div class="cb" style="padding:0"><table class="rt"><thead><tr><th>Concepto</th><th>Tasa</th></tr></thead><tbody><tr><td>Jubilación (AFP)</td><td><span class="pill r">10.00%</span></td></tr><tr><td>Riesgo Común</td><td><span class="pill r">1.71%</span></td></tr><tr><td>Comisión AFP</td><td><span class="pill r">0.50%</span></td></tr><tr><td>Fondo Solidario</td><td><span class="pill r">0.50%</span></td></tr><tr><td><strong>Total Base</strong></td><td><span class="pill r"><strong>12.71%</strong></span></td></tr></tbody></table></div></div>
-    <div class="card"><div class="ch"><div class="ci a"><svg><use href="#i-pct"/></svg></div><span class="ct">Solidario Progresivo</span></div><div class="cb" style="padding:0"><table class="rt"><thead><tr><th>Rango Salarial</th><th>Tasa Adicional</th></tr></thead><tbody><tr><td>Hasta 13,000 Bs</td><td><span class="pill g">0%</span></td></tr><tr><td>&gt; 13,000 Bs</td><td><span class="pill a">+1.15%</span></td></tr><tr><td>&gt; 25,000 Bs</td><td><span class="pill a">+5.74%</span></td></tr><tr><td>&gt; 35,000 Bs</td><td><span class="pill a">+11.48%</span></td></tr></tbody></table></div></div>
-    <div class="card"><div class="ch"><div class="ci b"><svg><use href="#i-building"/></svg></div><span class="ct">Aportes del Empleador</span></div><div class="cb" style="padding:0"><table class="rt"><thead><tr><th>Concepto</th><th>Tasa</th></tr></thead><tbody><tr><td>Caja de Salud</td><td><span class="pill b">10.00%</span></td></tr><tr><td>Fondo de Vivienda</td><td><span class="pill b">2.00%</span></td></tr><tr><td>Riesgo Profesional (oficina)</td><td><span class="pill b">1.71%</span></td></tr><tr><td>Aporte Solidario Patronal</td><td><span class="pill b">3.50%</span></td></tr><tr><td><strong>Total Mínimo</strong></td><td><span class="pill b"><strong>17.21%</strong></span></td></tr></tbody></table></div></div>
-    <div class="card"><div class="ch"><div class="ci g"><svg><use href="#i-gift"/></svg></div><span class="ct">Beneficios Sociales</span></div><div class="cb" style="padding:0"><table class="rt"><thead><tr><th>Concepto</th><th>Mensual</th><th>Equivale</th></tr></thead><tbody><tr><td>Aguinaldo</td><td><span class="pill a">8.33%</span></td><td>1 salario/año</td></tr><tr><td>Prima (utilidades)</td><td><span class="pill a">8.33%</span></td><td>1 salario/año</td></tr><tr><td>Quinquenio</td><td><span class="pill a">8.33%</span></td><td>c/5 años</td></tr></tbody></table></div></div>
+    <div class="card">
+      <div class="ch"><div class="ci r"><svg><use href="#i-user"/></svg></div><span class="ct">Aportes del Trabajador</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Concepto</th><th>Tasa</th></tr></thead>
+          <tbody>
+            <tr><td>Jubilación (AFP)</td><td><span class="pill r">10.00%</span></td></tr>
+            <tr><td>Riesgo Común</td><td><span class="pill r">1.71%</span></td></tr>
+            <tr><td>Comisión AFP</td><td><span class="pill r">0.50%</span></td></tr>
+            <tr><td>Fondo Solidario</td><td><span class="pill r">0.50%</span></td></tr>
+            <tr><td><strong>Total Base</strong></td><td><span class="pill r"><strong>12.71%</strong></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ci a"><svg><use href="#i-pct"/></svg></div><span class="ct">Solidario Progresivo</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Rango Salarial</th><th>Tasa Adicional</th></tr></thead>
+          <tbody>
+            <tr><td>Hasta 13,000 Bs</td><td><span class="pill g">0%</span></td></tr>
+            <tr><td>&gt; 13,000 Bs</td><td><span class="pill a">+1.15%</span></td></tr>
+            <tr><td>&gt; 25,000 Bs</td><td><span class="pill a">+5.74%</span></td></tr>
+            <tr><td>&gt; 35,000 Bs</td><td><span class="pill a">+11.48%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ci b"><svg><use href="#i-building"/></svg></div><span class="ct">Aportes del Empleador</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Concepto</th><th>Tasa</th></tr></thead>
+          <tbody>
+            <tr><td>Caja de Salud</td><td><span class="pill b">10.00%</span></td></tr>
+            <tr><td>Fondo de Vivienda</td><td><span class="pill b">2.00%</span></td></tr>
+            <tr><td>Riesgo Profesional (oficina)</td><td><span class="pill b">1.71%</span></td></tr>
+            <tr><td>Aporte Solidario Patronal</td><td><span class="pill b">3.50%</span></td></tr>
+            <tr><td><strong>Total Mínimo</strong></td><td><span class="pill b"><strong>17.21%</strong></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ci g"><svg><use href="#i-gift"/></svg></div><span class="ct">Beneficios Sociales</span></div>
+      <div class="cb" style="padding:0">
+        <table class="rt">
+          <thead><tr><th>Concepto</th><th>Mensual</th><th>Equivale</th></tr></thead>
+          <tbody>
+            <tr><td>Aguinaldo</td><td><span class="pill a">8.33%</span></td><td>1 salario/año</td></tr>
+            <tr><td>Prima (utilidades)</td><td><span class="pill a">8.33%</span></td><td>1 salario/año</td></tr>
+            <tr><td>Quinquenio</td><td><span class="pill a">8.33%</span></td><td>c/5 años</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
 </div>
 <footer>
   <strong>AportesBO 2026</strong> — Calculadora de Aportes Laborales Bolivia<br>
-  <span style="font-size:.75rem">Herramienta orientativa. Consulta a un contador para casos específicos. Normativa gestión 2026. SMN base referencial Bs 2,500 (Decreto 5503).</span>
+  <span style="font-size:.75rem">Herramienta orientativa. Consulta a un contador para casos específicos. Normativa gestión 2026.</span>
 </footer>
 
 <script>
@@ -369,7 +551,6 @@ function sectorChange(){
   calculate();
 }
 function fmt(n){return'Bs. '+(n||0).toLocaleString('es-BO',{minimumFractionDigits:2,maximumFractionDigits:2})}
-const SMN = 2500; // Salario Mínimo Nacional referencial 2026 (Decreto 5503)
 
 let pieChart,barChart;
 function initCharts(){
@@ -410,13 +591,6 @@ function calculate(){
   const aguinaldo=doAgui?salary*0.0833:0, prima=doPrima?salary*0.0833:0, quinq=doQuinq?salary*0.0833:0;
   const totalPat=salud+viv+riesP+solPat+aguinaldo+prima+quinq;
   const costoTotal=salary+totalPat;
-
-  // valores SMN
-  const grossSMN = salary / SMN;
-  const netSMN = neto / SMN;
-
-  document.getElementById('smnGross').innerHTML = grossSMN.toFixed(2) + ' <small>SMN</small>';
-  document.getElementById('smnNet').innerHTML = netSMN.toFixed(2) + ' <small>SMN</small>';
 
   document.getElementById('r_jub').textContent=fmt(jub);
   document.getElementById('r_ries').textContent=fmt(ries);
